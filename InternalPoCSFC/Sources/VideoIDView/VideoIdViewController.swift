@@ -28,6 +28,7 @@ class VideoIdViewController: UIViewController {
         guard let modelUnw = self.model else { return }
         // WebView + Delegate
         self.myWebView.navigationDelegate = self
+        self.myWebView.configuration.preferences.javaScriptEnabled = true
         self.loadWebView(dni: modelUnw.dni ?? "", email: modelUnw.telefono ?? "", telefono: modelUnw.email ?? "")
     }
     
