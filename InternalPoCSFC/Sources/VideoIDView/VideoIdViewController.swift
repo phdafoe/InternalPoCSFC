@@ -10,52 +10,43 @@ import WebKit
 
 class VideoIdViewController: UIViewController {
     
-    // MARK: - IBOutlets
-    @IBOutlet weak var myWebView: WKWebView!
+    // MARK: - Variables
     var model: UserDataModel?
     let isLogged = false
+    
+    // MARK: - IBOutlets
+    @IBOutlet weak var myWebView: WKWebView!
+    
         
     // MARK: - Cycle life
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.clearCache()
+        // Clear cache
+        Utils.shared.clearCache()
+        // Control model data
         self.model = UserDataModel().fetchUserDataModel()
-        self.myWebView.navigationDelegate = self
         guard let modelUnw = self.model else { return }
+        // WebView + Delegate
+        self.myWebView.navigationDelegate = self
         self.loadWebView(dni: modelUnw.dni ?? "", email: modelUnw.telefono ?? "", telefono: modelUnw.email ?? "")
     }
-
-    // MARK: - Private methods
-    private func clearCache() {
-        if #available(iOS 9.0, *) {
-            let websiteDataTypes = NSSet(array: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache])
-            let date = NSDate(timeIntervalSince1970: 0)
-            WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set<String>, modifiedSince: date as Date, completionHandler:{ })
-        } else {
-            var libraryPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.libraryDirectory, FileManager.SearchPathDomainMask.userDomainMask, false).first!
-            libraryPath += "/Cookies"
-            do {
-                try FileManager.default.removeItem(atPath: libraryPath)
-            } catch {
-                print("error")
-            }
-            URLCache.shared.removeAllCachedResponses()
-        }
-    }
-    
     
     private func loadWebView(dni: String, email: String, telefono: String){
         var urlCaptaciónPass: URL!
+        // Control user logged or not
         if isLogged{
+            // created url with parameters encode base 64
             let baseUrl = "https://pass.carrefour.es/tarjeta/personal?origen="
             let parameters = "mic4&dni=\(dni)&email=\(email)&telefono=\(telefono)".base64Encoded() ?? ""
             guard let urlUnw = URL(string: "\(baseUrl+parameters)") else { return }
             urlCaptaciónPass = urlUnw
         } else {
+            // create url for PoC
             let baseUrl = "https://prestamoscua.global.npsa.carrefour.es/documentacion"
             guard let urlUnw = URL(string: "\(baseUrl)") else { return }
             urlCaptaciónPass = urlUnw
         }
+        // load WebView
         self.myWebView.load(URLRequest(url: urlCaptaciónPass))
     }
 
