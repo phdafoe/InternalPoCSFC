@@ -18,6 +18,7 @@ class VideoIdViewController: UIViewController {
     // MARK: - Cycle life
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.clearCache()
         self.model = UserDataModel().fetchUserDataModel()
         self.myWebView.navigationDelegate = self
         guard let modelUnw = self.model else { return }
@@ -25,6 +26,24 @@ class VideoIdViewController: UIViewController {
     }
 
     // MARK: - Private methods
+    private func clearCache() {
+        if #available(iOS 9.0, *) {
+            let websiteDataTypes = NSSet(array: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache])
+            let date = NSDate(timeIntervalSince1970: 0)
+            WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set<String>, modifiedSince: date as Date, completionHandler:{ })
+        } else {
+            var libraryPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.libraryDirectory, FileManager.SearchPathDomainMask.userDomainMask, false).first!
+            libraryPath += "/Cookies"
+            do {
+                try FileManager.default.removeItem(atPath: libraryPath)
+            } catch {
+                print("error")
+            }
+            URLCache.shared.removeAllCachedResponses()
+        }
+    }
+    
+    
     private func loadWebView(dni: String, email: String, telefono: String){
         var urlCaptaciónPass: URL!
         if isLogged{
@@ -58,21 +77,31 @@ extension VideoIdViewController: WKNavigationDelegate {
         
         decisionHandler(.allow)
         debugPrint("navigationResponse.response +\(navigationResponse.response.url?.absoluteString ?? "")")
+        debugPrint("navigationResponse.response +\(navigationResponse.response)")
         
+        guard let errorUnw = navigationResponse.response.url?.absoluteString.contains("errorSistema") else {
+            return
+        }
         
-        /*if ((navigationResponse.response.url?.absoluteString.contains("documentacion")) != nil){
-            //debugPrint("\(errorUnw)")
+        guard let exitoUnw = navigationResponse.response.url?.absoluteString.contains("solicitudProcesadaOk") else {
+            return
+        }
+        
+        if errorUnw {
+            debugPrint("\(errorUnw)")
             // Vista Error
             let errorVC = ErrorCoordinator.view(delegate: self)
             errorVC.modalPresentationStyle = .fullScreen
             self.present(errorVC, animated: true, completion: nil)
             
-        } else if let exitoUnw = navigationResponse.response.url?.absoluteString.contains("solicitudProcesadaOk"){
+        } else if exitoUnw {
             debugPrint("\(exitoUnw)")
             // Vista Exito
             let exitoVC = ExitoCoordinator.view(delegate: self)
+            exitoVC.modalPresentationStyle = .fullScreen
             self.present(exitoVC, animated: true, completion: nil)
-        }*/
+        }
+        
     }
 }
 
@@ -90,6 +119,3 @@ extension VideoIdViewController: ExitoViewControllerDelegate, ErrorViewControlle
         }
     }
 }
-
-
-
