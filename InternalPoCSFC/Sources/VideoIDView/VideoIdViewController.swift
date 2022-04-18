@@ -12,7 +12,7 @@ class VideoIdViewController: UIViewController {
     
     // MARK: - Variables
     var model: UserDataModel?
-    let isLogged = false
+    let isLogged = true
     let isPoc = true
     
     // MARK: - IBOutlets
@@ -37,10 +37,23 @@ class VideoIdViewController: UIViewController {
         var urlCaptaciónPass: URL!
         // Control user logged or not
         if isLogged{
-            // created url with parameters encode base 64
-            let baseUrl = "https://pass.carrefour.es/tarjeta/personal?data="
-            let parameters = "mic4&cod=WEBFD&dni=\(dni)&email=\(email)&telefono=\(telefono)".base64Encoded() ?? ""
-            guard let urlUnw = URL(string: "\(baseUrl+parameters)") else { return }
+            // created url with parameters encode base 64rx
+            let baseUrl = "https://pass.carrefour.es/tarjeta/personal?origen=mic4&data="
+            let parameters: [String: Any] = [
+                "dni": dni,
+                "email": email,
+                "movil": telefono,
+                "term": true,
+                "priv": true
+            ]
+            let aux = parameters.description
+            debugPrint(aux)
+            
+            let cookieHeader = (parameters.compactMap({ (key, value) -> String in
+                return "\(key):\(value)".base64Encoded() ?? ""
+            }) as Array).joined(separator: ",")
+            //let parameters = "{"\(origen)":"\(mic4)",'dni':'\(dni)','email':'\(email)','telefono':'\(telefono)','term':'true','priv':'true'}".base64Encoded() ?? ""
+            guard let urlUnw = URL(string: "\(baseUrl+cookieHeader)") else { return }
             urlCaptaciónPass = urlUnw
             debugPrint(urlCaptaciónPass)
         } else if !isPoc{
