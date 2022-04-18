@@ -13,6 +13,7 @@ class VideoIdViewController: UIViewController {
     // MARK: - Variables
     var model: UserDataModel?
     let isLogged = false
+    let isPoc = true
     
     // MARK: - IBOutlets
     @IBOutlet weak var myWebView: WKWebView!
@@ -29,7 +30,7 @@ class VideoIdViewController: UIViewController {
         // WebView + Delegate
         self.myWebView.navigationDelegate = self
         self.myWebView.configuration.preferences.javaScriptEnabled = true
-        self.loadWebView(dni: modelUnw.dni ?? "", email: modelUnw.telefono ?? "", telefono: modelUnw.email ?? "")
+        self.loadWebView(dni: modelUnw.dni ?? "", email: modelUnw.email ?? "", telefono: modelUnw.telefono ?? "")
     }
     
     private func loadWebView(dni: String, email: String, telefono: String){
@@ -37,12 +38,18 @@ class VideoIdViewController: UIViewController {
         // Control user logged or not
         if isLogged{
             // created url with parameters encode base 64
-            let baseUrl = "https://pass.carrefour.es/tarjeta/personal?origen="
-            let parameters = "mic4&dni=\(dni)&email=\(email)&telefono=\(telefono)".base64Encoded() ?? ""
+            let baseUrl = "https://pass.carrefour.es/tarjeta/personal?data="
+            let parameters = "mic4&cod=WEBFD&dni=\(dni)&email=\(email)&telefono=\(telefono)".base64Encoded() ?? ""
+            guard let urlUnw = URL(string: "\(baseUrl+parameters)") else { return }
+            urlCaptaciónPass = urlUnw
+            debugPrint(urlCaptaciónPass)
+        } else if !isPoc{
+            // create url for user not logged
+            let baseUrl = "https://pass.carrefour.es/tarjeta/inicio?origen="
+            let parameters = "mic4&cod=WEBFD".base64Encoded() ?? ""
             guard let urlUnw = URL(string: "\(baseUrl+parameters)") else { return }
             urlCaptaciónPass = urlUnw
         } else {
-            // create url for PoC
             let baseUrl = "https://prestamoscua.global.npsa.carrefour.es/documentacion"
             guard let urlUnw = URL(string: "\(baseUrl)") else { return }
             urlCaptaciónPass = urlUnw
