@@ -39,23 +39,17 @@ class VideoIdViewController: UIViewController {
         if isLogged{
             // created url with parameters encode base 64rx
             let baseUrl = "https://pass.carrefour.es/tarjeta/personal?origen=mic4&data="
-            let parameters: [String: Any] = [
-                "dni": dni,
-                "email": email,
-                "movil": telefono,
-                "term": true,
-                "priv": true
-            ]
-            let aux = parameters.description
-            debugPrint(aux)
+            let userData = UserData(dni: dni, movil: telefono, email: email, term: true, priv: true)
+
+            let encoder = JSONEncoder()
+            if let jsonData = try? encoder.encode(userData) {
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    guard let urlUnw = URL(string: "\(baseUrl+(jsonString.base64Encoded() ?? ""))") else { return }
+                    urlCaptaciónPass = urlUnw
+                    debugPrint(urlCaptaciónPass!)
+                }
+            }
             
-            let cookieHeader = (parameters.compactMap({ (key, value) -> String in
-                return "\(key):\(value)".base64Encoded() ?? ""
-            }) as Array).joined(separator: ",")
-            //let parameters = "{"\(origen)":"\(mic4)",'dni':'\(dni)','email':'\(email)','telefono':'\(telefono)','term':'true','priv':'true'}".base64Encoded() ?? ""
-            guard let urlUnw = URL(string: "\(baseUrl+cookieHeader)") else { return }
-            urlCaptaciónPass = urlUnw
-            debugPrint(urlCaptaciónPass)
         } else if !isPoc{
             // create url for user not logged
             let baseUrl = "https://pass.carrefour.es/tarjeta/inicio?origen="

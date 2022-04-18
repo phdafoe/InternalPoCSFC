@@ -24,3 +24,11 @@ struct UserDataModel{
     }
     
 }
+
+struct UserData: Encodable {
+    var dni: String?
+    var movil: String?
+    var email: String?
+    var term: Bool?
+    var priv: Bool?
+}
