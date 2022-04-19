@@ -12,7 +12,7 @@ class VideoIdViewController: UIViewController {
     
     // MARK: - Variables
     var model: UserDataModel?
-    let isRecoverAuthentication = true
+    let isRecoverAuthentication = false
     let isPoc = true
     
     // MARK: - IBOutlets
@@ -76,7 +76,6 @@ extension VideoIdViewController: WKNavigationDelegate {
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         decisionHandler(.allow)
-        debugPrint("navigationAction.request + \(navigationAction.request.url?.absoluteString ?? "")")
     }
     
     func webView(_ webView: WKWebView,
@@ -84,10 +83,7 @@ extension VideoIdViewController: WKNavigationDelegate {
                  decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         
         decisionHandler(.allow)
-        debugPrint("navigationResponse.response +\(navigationResponse.response.url?.absoluteString ?? "")")
-        debugPrint("navigationResponse.response +\(navigationResponse.response)")
-//        end=true card=false
-        
+        debugPrint(navigationResponse.response.url?.absoluteString ?? "")
         guard let endNativeFlowErrorUnw = navigationResponse.response.url?.absoluteString.contains("/end=true") else {
             return
         }
@@ -105,10 +101,10 @@ extension VideoIdViewController: WKNavigationDelegate {
         }
         
         if endNativeFlowErrorUnw {
-            // Go to home
+            self.dismiss(animated: true, completion: nil)
         } else if nativeErrorUnw {
             debugPrint("\(nativeErrorUnw)")
-            // Vista Error
+            // View native retry error
             let errorVC = ErrorCoordinator.view(delegate: self, dto: MessageDTO(title: "Lo Sentimos",
                                                                                 message: "Hemos llegado al máximo de reintentos en una sesión, por favor inténtalo más tarde.",
                                                                                 messageTwo: ""))
@@ -117,7 +113,7 @@ extension VideoIdViewController: WKNavigationDelegate {
             
         } else if nativeErrorSEUnw{
             debugPrint("\(nativeErrorSEUnw)")
-            // Vista Error
+            // View native SE error
             let errorVC = ErrorCoordinator.view(delegate: self, dto: MessageDTO(title: "Lo sentimos, después de estudiar tu información, te informamos de que tu solicitud de Tarjeta PASS no ha sido aprobada.",
                                                                                 message: "Gracias por confiar en Servicios Financieros Carrefour E.F.C. S.A.",
                                                                                 messageTwo: "Un cordial saludo."))
@@ -140,12 +136,13 @@ extension VideoIdViewController: ExitoViewControllerDelegate, ErrorViewControlle
     func dismissSuccessVC(_ viewController: UIViewController, isDismiss: Bool) {
         if isDismiss{
            // Go to Home
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
     func dismissErrorVC(_ viewController: UIViewController, isDismiss: Bool) {
         if isDismiss{
-            // Go to Home
+            self.dismiss(animated: true, completion: nil)
         }
     }
 }

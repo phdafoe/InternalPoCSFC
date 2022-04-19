@@ -18,7 +18,7 @@ final class AppCoreCoordinator{
 
 extension AppCoreCoordinator: AppCoreCoordinatorProtocol {
     func initialVC(window: UIWindow) {
-        self.currentVC = VideoIdCoordinator.view()
+        self.currentVC = HomeCoordinator.view()
         window.rootViewController = self.currentVC
         window.makeKeyAndVisible()
     }

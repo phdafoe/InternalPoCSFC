@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		F601D44827ECBD9C00BD6B52 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F601D44727ECBD9C00BD6B52 /* Utils.swift */; };
+		F6A24504280EBA950064500A /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A24502280EBA950064500A /* LandingViewController.swift */; };
+		F6A24505280EBA950064500A /* LandingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A24503280EBA950064500A /* LandingViewController.xib */; };
+		F6A24508280EBAA60064500A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A24506280EBAA60064500A /* HomeViewController.swift */; };
+		F6A24509280EBAA60064500A /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A24507280EBAA60064500A /* HomeViewController.xib */; };
+		F6A2450B280EBAB60064500A /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2450A280EBAB60064500A /* HomeCoordinator.swift */; };
+		F6A2450D280EBB020064500A /* LandingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2450C280EBB020064500A /* LandingCoordinator.swift */; };
 		F6BEC5D927EB3ED3002FB942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BEC5D827EB3ED3002FB942 /* AppDelegate.swift */; };
 		F6BEC5E227EB3ED6002FB942 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6BEC5E127EB3ED6002FB942 /* Assets.xcassets */; };
 		F6BEC5E527EB3ED6002FB942 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6BEC5E327EB3ED6002FB942 /* LaunchScreen.storyboard */; };
@@ -26,6 +32,12 @@
 
 /* Begin PBXFileReference section */
 		F601D44727ECBD9C00BD6B52 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		F6A24502280EBA950064500A /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
+		F6A24503280EBA950064500A /* LandingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LandingViewController.xib; sourceTree = "<group>"; };
+		F6A24506280EBAA60064500A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		F6A24507280EBAA60064500A /* HomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		F6A2450A280EBAB60064500A /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
+		F6A2450C280EBB020064500A /* LandingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingCoordinator.swift; sourceTree = "<group>"; };
 		F6BEC5D527EB3ED3002FB942 /* InternalPoCSFC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InternalPoCSFC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BEC5D827EB3ED3002FB942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F6BEC5E127EB3ED6002FB942 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -61,6 +73,26 @@
 				F601D44727ECBD9C00BD6B52 /* Utils.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		F6A24500280EBA790064500A /* Landing */ = {
+			isa = PBXGroup;
+			children = (
+				F6A24502280EBA950064500A /* LandingViewController.swift */,
+				F6A24503280EBA950064500A /* LandingViewController.xib */,
+				F6A2450C280EBB020064500A /* LandingCoordinator.swift */,
+			);
+			path = Landing;
+			sourceTree = "<group>";
+		};
+		F6A24501280EBA820064500A /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				F6A24506280EBAA60064500A /* HomeViewController.swift */,
+				F6A24507280EBAA60064500A /* HomeViewController.xib */,
+				F6A2450A280EBAB60064500A /* HomeCoordinator.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		F6BEC5CC27EB3ED3002FB942 = {
@@ -105,6 +137,8 @@
 		F6BEC5ED27EB3EFD002FB942 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				F6A24501280EBA820064500A /* Home */,
+				F6A24500280EBA790064500A /* Landing */,
 				F6EBC23527F1BFEC008E3F54 /* ExitoView */,
 				F6EBC23427F1BFE3008E3F54 /* ErrorView */,
 				F6EBC23327F1BFDA008E3F54 /* VideoIDView */,
@@ -208,10 +242,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6A24505280EBA950064500A /* LandingViewController.xib in Resources */,
 				F6BEC5E527EB3ED6002FB942 /* LaunchScreen.storyboard in Resources */,
 				F6EBC23927F1BFFF008E3F54 /* ErrorViewController.xib in Resources */,
 				F6EBC23D27F1C00E008E3F54 /* ExitoViewController.xib in Resources */,
 				F6BEC5F127EB3F18002FB942 /* VideoIdViewController.xib in Resources */,
+				F6A24509280EBAA60064500A /* HomeViewController.xib in Resources */,
 				F6BEC5E227EB3ED6002FB942 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,14 +261,18 @@
 			files = (
 				F6EBC23827F1BFFF008E3F54 /* ErrorViewController.swift in Sources */,
 				F6EBC23F27F1C029008E3F54 /* ExitoCoordinator.swift in Sources */,
+				F6A24504280EBA950064500A /* LandingViewController.swift in Sources */,
 				F6EBC23227EDC104008E3F54 /* UserDataModel.swift in Sources */,
+				F6A2450D280EBB020064500A /* LandingCoordinator.swift in Sources */,
 				F601D44827ECBD9C00BD6B52 /* Utils.swift in Sources */,
 				F6BEC5D927EB3ED3002FB942 /* AppDelegate.swift in Sources */,
 				F6EBC23C27F1C00E008E3F54 /* ExitoViewController.swift in Sources */,
 				F6BEC5F027EB3F18002FB942 /* VideoIdViewController.swift in Sources */,
+				F6A2450B280EBAB60064500A /* HomeCoordinator.swift in Sources */,
 				F6BEC5F327EB3F2F002FB942 /* AppCoreCoordinator.swift in Sources */,
 				F6BEC5F527EB3F7F002FB942 /* VideoIdCoordinator.swift in Sources */,
 				F6EBC24127F1C03A008E3F54 /* ErrorCoordinator.swift in Sources */,
+				F6A24508280EBAA60064500A /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
