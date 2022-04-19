@@ -8,12 +8,17 @@
 import UIKit
 import WebKit
 
+protocol VideoIdViewControllerDelegate: AnyObject {
+    func dismissVideoId(_ viewController: UIViewController, isDismiss: Bool)
+}
+
 class VideoIdViewController: UIViewController {
     
     // MARK: - Variables
     var model: UserDataModel?
     let isRecoverAuthentication = false
     let isPoc = true
+    weak var delegate: VideoIdViewControllerDelegate?
     
     // MARK: - IBOutlets
     @IBOutlet weak var myWebView: WKWebView!
@@ -100,6 +105,11 @@ extension VideoIdViewController: WKNavigationDelegate {
             return
         }
         
+        guard let testErrorFlowUnw = navigationResponse.response.url?.absoluteString.contains("/anchor") else {
+            return
+        }
+        
+        
         if endNativeFlowErrorUnw {
             self.dismiss(animated: true, completion: nil)
         } else if nativeErrorUnw {
@@ -112,6 +122,15 @@ extension VideoIdViewController: WKNavigationDelegate {
             self.present(errorVC, animated: true, completion: nil)
             
         } else if nativeErrorSEUnw{
+            debugPrint("\(nativeErrorSEUnw)")
+            // View native SE error
+            let errorVC = ErrorCoordinator.view(delegate: self, dto: MessageDTO(title: "Lo sentimos, después de estudiar tu información, te informamos de que tu solicitud de Tarjeta PASS no ha sido aprobada.",
+                                                                                message: "Gracias por confiar en Servicios Financieros Carrefour E.F.C. S.A.",
+                                                                                messageTwo: "Un cordial saludo."))
+            errorVC.modalPresentationStyle = .fullScreen
+            self.present(errorVC, animated: true, completion: nil)
+            
+        } else if testErrorFlowUnw{
             debugPrint("\(nativeErrorSEUnw)")
             // View native SE error
             let errorVC = ErrorCoordinator.view(delegate: self, dto: MessageDTO(title: "Lo sentimos, después de estudiar tu información, te informamos de que tu solicitud de Tarjeta PASS no ha sido aprobada.",
@@ -135,14 +154,19 @@ extension VideoIdViewController: WKNavigationDelegate {
 extension VideoIdViewController: ExitoViewControllerDelegate, ErrorViewControllerDelegate {
     func dismissSuccessVC(_ viewController: UIViewController, isDismiss: Bool) {
         if isDismiss{
-           // Go to Home
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: false, completion: {
+                self.delegate?.dismissVideoId(self, isDismiss: true)
+            })
+            
         }
     }
     
     func dismissErrorVC(_ viewController: UIViewController, isDismiss: Bool) {
         if isDismiss{
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: false, completion: {
+                self.delegate?.dismissVideoId(self, isDismiss: true)
+            })
+            
         }
     }
 }

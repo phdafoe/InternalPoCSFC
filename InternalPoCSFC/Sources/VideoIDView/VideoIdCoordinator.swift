@@ -10,8 +10,9 @@ import UIKit
 
 final class VideoIdCoordinator{
     
-    static func view() -> UIViewController{
+    static func view(delegate: VideoIdViewControllerDelegate) -> UIViewController{
         let vc = VideoIdViewController()
+        vc.delegate = delegate
         return vc
     }
 }

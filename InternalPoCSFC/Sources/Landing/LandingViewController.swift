@@ -9,12 +9,14 @@ import UIKit
 
 class LandingViewController: UIViewController {
     
+    
+    
     @IBAction func dismissLandingView(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func goCDWebView(_ sender: Any) {
-        let vc = VideoIdCoordinator.view()
+        let vc = VideoIdCoordinator.view(delegate: self)
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
@@ -37,3 +39,10 @@ class LandingViewController: UIViewController {
     */
 
 }
+
+extension LandingViewController: VideoIdViewControllerDelegate {
+    func dismissVideoId(_ viewController: UIViewController, isDismiss: Bool) {
+        self.dismiss(animated: false, completion: nil)
+    }
+}
+
