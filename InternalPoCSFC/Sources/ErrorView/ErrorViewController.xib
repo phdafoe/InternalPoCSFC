@@ -11,6 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ErrorViewController" customModule="InternalPoCSFC" customModuleProvider="target">
             <connections>
+                <outlet property="messageLBL" destination="EBN-h7-yNU" id="HXz-SI-6x5"/>
+                <outlet property="messageTwoLBL" destination="Gde-BI-dae" id="Nam-CH-c87"/>
+                <outlet property="titleLBL" destination="VAI-0M-Rrl" id="5ic-vh-9Tq"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

@@ -15,6 +15,12 @@ class ErrorViewController: UIViewController {
     
     // MARK: - Variables
     weak var delegate: ErrorViewControllerDelegate?
+    var dataFlow: MessageDTO?
+    
+    // MARK: - IBOutlets
+    @IBOutlet weak var titleLBL: UILabel!
+    @IBOutlet weak var messageLBL: UILabel!
+    @IBOutlet weak var messageTwoLBL: UILabel!
     
     // MARK: - IBActions
     @IBAction func finalizarACTION(_ sender: Any) {
@@ -25,7 +31,9 @@ class ErrorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.titleLBL.text = self.dataFlow?.title
+        self.messageLBL.text = self.dataFlow?.message
+        self.messageTwoLBL.text = self.dataFlow?.messageTwo
         // Do any additional setup after loading the view.
     }
 

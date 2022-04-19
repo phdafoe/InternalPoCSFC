@@ -12,7 +12,7 @@ class VideoIdViewController: UIViewController {
     
     // MARK: - Variables
     var model: UserDataModel?
-    let isLogged = true
+    let isRecoverAuthentication = true
     let isPoc = true
     
     // MARK: - IBOutlets
@@ -30,31 +30,33 @@ class VideoIdViewController: UIViewController {
         // WebView + Delegate
         self.myWebView.navigationDelegate = self
         self.myWebView.configuration.preferences.javaScriptEnabled = true
-        self.loadWebView(dni: modelUnw.dni ?? "", email: modelUnw.email ?? "", telefono: modelUnw.telefono ?? "")
+        self.loadWebView(userData: modelUnw)
     }
     
-    private func loadWebView(dni: String, email: String, telefono: String){
+    private func loadWebView(userData: UserDataModel){
         var urlCaptaciónPass: URL!
-        // Control user logged or not
-        if isLogged{
-            // created url with parameters encode base 64rx
-            let baseUrl = "https://pass.carrefour.es/tarjeta/personal?origen=mic4&data="
-            let userData = UserData(dni: dni, movil: telefono, email: email, term: true, priv: true)
-
+        // Control if user it allows use data from App MiC4
+        if isRecoverAuthentication{
+            // created base url
+            let baseUrl = "https://pass.carrefour.es/tarjeta/inicio?origen=mic4&data="
+            // created ModelData
+            let userData = UserData(dni: userData.dni, movil: userData.telefono, email: userData.email)
+            // Encode ModelData for put information in WebView
             let encoder = JSONEncoder()
             if let jsonData = try? encoder.encode(userData) {
                 if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    // Control encode base64, for security parameters in url
                     guard let urlUnw = URL(string: "\(baseUrl+(jsonString.base64Encoded() ?? ""))") else { return }
                     urlCaptaciónPass = urlUnw
+                    // Control internal log's
                     debugPrint(urlCaptaciónPass!)
                 }
             }
             
         } else if !isPoc{
-            // create url for user not logged
-            let baseUrl = "https://pass.carrefour.es/tarjeta/inicio?origen="
-            let parameters = "mic4&cod=WEBFD".base64Encoded() ?? ""
-            guard let urlUnw = URL(string: "\(baseUrl+parameters)") else { return }
+            // create url when user not allows get data from App MiC4
+            let baseUrl = "https://pass.carrefour.es/tarjeta/inicio?origen=mic4"
+            guard let urlUnw = URL(string: "\(baseUrl)") else { return }
             urlCaptaciónPass = urlUnw
         } else {
             let baseUrl = "https://prestamoscua.global.npsa.carrefour.es/documentacion"
@@ -84,19 +86,41 @@ extension VideoIdViewController: WKNavigationDelegate {
         decisionHandler(.allow)
         debugPrint("navigationResponse.response +\(navigationResponse.response.url?.absoluteString ?? "")")
         debugPrint("navigationResponse.response +\(navigationResponse.response)")
+//        end=true card=false
         
-        guard let errorUnw = navigationResponse.response.url?.absoluteString.contains("errorSistema") else {
+        guard let endNativeFlowErrorUnw = navigationResponse.response.url?.absoluteString.contains("/end=true") else {
             return
         }
         
-        guard let exitoUnw = navigationResponse.response.url?.absoluteString.contains("solicitudProcesadaOk") else {
+        guard let nativeErrorUnw = navigationResponse.response.url?.absoluteString.contains("/retry=false&end=true") else {
             return
         }
         
-        if errorUnw {
-            debugPrint("\(errorUnw)")
+        guard let nativeErrorSEUnw = navigationResponse.response.url?.absoluteString.contains("/card=false") else {
+            return
+        }
+        
+        guard let exitoUnw = navigationResponse.response.url?.absoluteString.contains("/success=true") else {
+            return
+        }
+        
+        if endNativeFlowErrorUnw {
+            // Go to home
+        } else if nativeErrorUnw {
+            debugPrint("\(nativeErrorUnw)")
             // Vista Error
-            let errorVC = ErrorCoordinator.view(delegate: self)
+            let errorVC = ErrorCoordinator.view(delegate: self, dto: MessageDTO(title: "Lo Sentimos",
+                                                                                message: "Hemos llegado al máximo de reintentos en una sesión, por favor inténtalo más tarde.",
+                                                                                messageTwo: ""))
+            errorVC.modalPresentationStyle = .fullScreen
+            self.present(errorVC, animated: true, completion: nil)
+            
+        } else if nativeErrorSEUnw{
+            debugPrint("\(nativeErrorSEUnw)")
+            // Vista Error
+            let errorVC = ErrorCoordinator.view(delegate: self, dto: MessageDTO(title: "Lo sentimos, después de estudiar tu información, te informamos de que tu solicitud de Tarjeta PASS no ha sido aprobada.",
+                                                                                message: "Gracias por confiar en Servicios Financieros Carrefour E.F.C. S.A.",
+                                                                                messageTwo: "Un cordial saludo."))
             errorVC.modalPresentationStyle = .fullScreen
             self.present(errorVC, animated: true, completion: nil)
             
@@ -115,13 +139,13 @@ extension VideoIdViewController: WKNavigationDelegate {
 extension VideoIdViewController: ExitoViewControllerDelegate, ErrorViewControllerDelegate {
     func dismissSuccessVC(_ viewController: UIViewController, isDismiss: Bool) {
         if isDismiss{
-           // Lo llevamos a la Home
+           // Go to Home
         }
     }
     
     func dismissErrorVC(_ viewController: UIViewController, isDismiss: Bool) {
         if isDismiss{
-           // Lo llevamos a la Home
+            // Go to Home
         }
     }
 }
