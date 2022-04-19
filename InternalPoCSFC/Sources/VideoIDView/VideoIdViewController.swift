@@ -43,7 +43,7 @@ class VideoIdViewController: UIViewController {
         // Control if user it allows use data from App MiC4
         if isRecoverAuthentication{
             // created base url
-            let baseUrl = "https://pass.carrefour.es/tarjeta/inicio?origen=mic4&data="
+            let baseUrl = "https://pass.carrefour.es/tarjeta/origen=mic4&data="
             // created ModelData
             let userData = UserData(dni: userData.dni, movil: userData.telefono, email: userData.email)
             // Encode ModelData for put information in WebView
@@ -60,7 +60,7 @@ class VideoIdViewController: UIViewController {
             
         } else if !isPoc{
             // create url when user not allows get data from App MiC4
-            let baseUrl = "https://pass.carrefour.es/tarjeta/inicio?origen=mic4"
+            let baseUrl = "https://pass.carrefour.es/tarjeta/origen=mic4"
             guard let urlUnw = URL(string: "\(baseUrl)") else { return }
             urlCaptaciónPass = urlUnw
         } else {
@@ -104,7 +104,9 @@ extension VideoIdViewController: WKNavigationDelegate {
         }
         
         if endNativeFlowErrorUnw {
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: false, completion: {
+                self.delegate?.dismissVideoId(self, isDismiss: true)
+            })
         } else if nativeErrorUnw {
             debugPrint("\(nativeErrorUnw)")
             // View native retry error
@@ -125,12 +127,11 @@ extension VideoIdViewController: WKNavigationDelegate {
             
         } else if exitoUnw {
             debugPrint("\(exitoUnw)")
-            // Vista Exito
+            // View final Success
             let exitoVC = ExitoCoordinator.view(delegate: self)
             exitoVC.modalPresentationStyle = .fullScreen
             self.present(exitoVC, animated: true, completion: nil)
         }
-        
     }
 }
 
