@@ -89,26 +89,19 @@ extension VideoIdViewController: WKNavigationDelegate {
         
         decisionHandler(.allow)
         debugPrint(navigationResponse.response.url?.absoluteString ?? "")
+        
         guard let endNativeFlowErrorUnw = navigationResponse.response.url?.absoluteString.contains("/end=true") else {
             return
         }
-        
         guard let nativeErrorUnw = navigationResponse.response.url?.absoluteString.contains("/retry=false&end=true") else {
             return
         }
-        
         guard let nativeErrorSEUnw = navigationResponse.response.url?.absoluteString.contains("/card=false") else {
             return
         }
-        
         guard let exitoUnw = navigationResponse.response.url?.absoluteString.contains("/success=true") else {
             return
         }
-        
-        guard let testErrorFlowUnw = navigationResponse.response.url?.absoluteString.contains("/anchor") else {
-            return
-        }
-        
         
         if endNativeFlowErrorUnw {
             self.dismiss(animated: true, completion: nil)
@@ -122,15 +115,6 @@ extension VideoIdViewController: WKNavigationDelegate {
             self.present(errorVC, animated: true, completion: nil)
             
         } else if nativeErrorSEUnw{
-            debugPrint("\(nativeErrorSEUnw)")
-            // View native SE error
-            let errorVC = ErrorCoordinator.view(delegate: self, dto: MessageDTO(title: "Lo sentimos, después de estudiar tu información, te informamos de que tu solicitud de Tarjeta PASS no ha sido aprobada.",
-                                                                                message: "Gracias por confiar en Servicios Financieros Carrefour E.F.C. S.A.",
-                                                                                messageTwo: "Un cordial saludo."))
-            errorVC.modalPresentationStyle = .fullScreen
-            self.present(errorVC, animated: true, completion: nil)
-            
-        } else if testErrorFlowUnw{
             debugPrint("\(nativeErrorSEUnw)")
             // View native SE error
             let errorVC = ErrorCoordinator.view(delegate: self, dto: MessageDTO(title: "Lo sentimos, después de estudiar tu información, te informamos de que tu solicitud de Tarjeta PASS no ha sido aprobada.",
