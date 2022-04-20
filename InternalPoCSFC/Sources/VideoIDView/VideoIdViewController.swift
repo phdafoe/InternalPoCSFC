@@ -90,16 +90,16 @@ extension VideoIdViewController: WKNavigationDelegate {
         decisionHandler(.allow)
         debugPrint(navigationResponse.response.url?.absoluteString ?? "")
         
-        guard let endNativeFlowErrorUnw = navigationResponse.response.url?.absoluteString.contains("/end=true") else {
+        guard let endNativeFlowErrorUnw = navigationResponse.response.url?.absoluteString.contains("?end=true") else {
             return
         }
-        guard let nativeErrorUnw = navigationResponse.response.url?.absoluteString.contains("/retry=false&end=true") else {
+        guard let nativeErrorUnw = navigationResponse.response.url?.absoluteString.contains("?retry=false&end=true") else {
             return
         }
-        guard let nativeErrorSEUnw = navigationResponse.response.url?.absoluteString.contains("/card=false") else {
+        guard let nativeErrorSEUnw = navigationResponse.response.url?.absoluteString.contains("?card=false") else {
             return
         }
-        guard let exitoUnw = navigationResponse.response.url?.absoluteString.contains("/success=true") else {
+        guard let successUnw = navigationResponse.response.url?.absoluteString.contains("?success=true") else {
             return
         }
         
@@ -125,8 +125,8 @@ extension VideoIdViewController: WKNavigationDelegate {
             errorVC.modalPresentationStyle = .fullScreen
             self.present(errorVC, animated: true, completion: nil)
             
-        } else if exitoUnw {
-            debugPrint("\(exitoUnw)")
+        } else if successUnw {
+            debugPrint("\(successUnw)")
             // View final Success
             let exitoVC = ExitoCoordinator.view(delegate: self)
             exitoVC.modalPresentationStyle = .fullScreen
