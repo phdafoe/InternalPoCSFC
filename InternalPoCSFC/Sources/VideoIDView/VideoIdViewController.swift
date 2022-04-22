@@ -43,7 +43,7 @@ class VideoIdViewController: UIViewController {
         // Control if user it allows use data from App MiC4
         if isRecoverAuthentication{
             // created base url
-            let baseUrl = "https://pass.carrefour.es/tarjeta/origen=mic4&data="
+            let baseUrl = "https://pass.carrefour.es/tarjeta/origen=MIC4&data="
             // created ModelData
             let userData = UserData(dni: userData.dni, movil: userData.telefono, email: userData.email)
             // Encode ModelData for put information in WebView
@@ -60,7 +60,7 @@ class VideoIdViewController: UIViewController {
             
         } else if !isPoc{
             // create url when user not allows get data from App MiC4
-            let baseUrl = "https://pass.carrefour.es/tarjeta/origen=mic4"
+            let baseUrl = "https://pass.carrefour.es/tarjeta/origen=MIC4"
             guard let urlUnw = URL(string: "\(baseUrl)") else { return }
             urlCaptaciónPass = urlUnw
         } else {
