@@ -18,6 +18,7 @@ class VideoIdViewController: UIViewController {
     var model: UserDataModel?
     let isRecoverAuthentication = false
     let isPoc = true
+    var baseUrl = ""
     weak var delegate: VideoIdViewControllerDelegate?
     
     // MARK: - IBOutlets
@@ -39,37 +40,63 @@ class VideoIdViewController: UIViewController {
     }
     
     private func loadWebView(userData: UserDataModel){
-        var urlCaptaciónPass: URL!
-        // Control if user it allows use data from App MiC4
+        //var urlCaptaciónPass: URL!
+        
+        // Control ENVIRONMENT
+#if PRO
+        // load WebView
+        
         if isRecoverAuthentication{
-            // created base url
-            let baseUrl = "https://pass.carrefour.es/tarjeta/origen=MIC4&data="
-            // created ModelData
+            baseUrl = "https://pass.carrefour.es/tarjeta/origen=MIC4&data="
+            guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
+                                                   userData: userData,
+                                                   baseURLParameters: baseUrl) else { return }
+            self.myWebView.load(URLRequest(url: url))
+        } else {
+            baseUrl = "https://pass.carrefour.es/tarjeta/origen=MIC4"
+            guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
+                                                   userData: userData,
+                                                   baseURLParameters: baseUrl) else { return }
+            self.myWebView.load(URLRequest(url: url))
+        }
+#else
+        if isRecoverAuthentication{
+            baseUrl = "https://bcmspassdigitalcua.global.npsa.carrefour.es/?origen=MIC4&data="
+            guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
+                                                   userData: userData,
+                                                   baseURLParameters: baseUrl) else { return }
+            self.myWebView.load(URLRequest(url: url))
+        } else {
+            baseUrl = "https://bcmspassdigitalcua.global.npsa.carrefour.es/?origen=MIC4"
+            guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
+                                                   userData: userData,
+                                                   baseURLParameters: baseUrl) else { return }
+            self.myWebView.load(URLRequest(url: url))
+        }
+#endif
+        
+    }
+    
+    private func urlForLoadWebView(isRecoverAuthentication: Bool, userData: UserDataModel, baseURLParameters: String) -> URL?{
+        var urlCaptaciónPass: URL?
+        if isRecoverAuthentication{
             let userData = UserData(dni: userData.dni, movil: userData.telefono, email: userData.email)
             // Encode ModelData for put information in WebView
             let encoder = JSONEncoder()
             if let jsonData = try? encoder.encode(userData) {
                 if let jsonString = String(data: jsonData, encoding: .utf8) {
                     // Control encode base64, for security parameters in url
-                    guard let urlUnw = URL(string: "\(baseUrl+(jsonString.base64Encoded() ?? ""))") else { return }
+                    guard let urlUnw = URL(string: "\(baseURLParameters+(jsonString.base64Encoded() ?? ""))") else { return nil }
                     urlCaptaciónPass = urlUnw
                     // Control internal log's
                     debugPrint(urlCaptaciónPass!)
                 }
             }
-            
-        } else if !isPoc{
-            // create url when user not allows get data from App MiC4
-            let baseUrl = "https://pass.carrefour.es/tarjeta/origen=MIC4"
-            guard let urlUnw = URL(string: "\(baseUrl)") else { return }
-            urlCaptaciónPass = urlUnw
-        } else {
-            let baseUrl = "https://prestamoscua.global.npsa.carrefour.es/documentacion"
-            guard let urlUnw = URL(string: "\(baseUrl)") else { return }
+        }else {
+            guard let urlUnw = URL(string: "\(baseURLParameters)") else { return nil }
             urlCaptaciónPass = urlUnw
         }
-        // load WebView
-        self.myWebView.load(URLRequest(url: urlCaptaciónPass))
+        return urlCaptaciónPass
     }
 
 }
