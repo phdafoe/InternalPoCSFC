@@ -16,7 +16,7 @@ class VideoIdViewController: UIViewController {
     
     // MARK: - Variables
     var model: UserDataModel?
-    let isRecoverAuthentication = false
+    let isRecoverAuthentication = true
     let isPoc = true
     var baseUrl = ""
     weak var delegate: VideoIdViewControllerDelegate?
@@ -40,12 +40,10 @@ class VideoIdViewController: UIViewController {
     }
     
     private func loadWebView(userData: UserDataModel){
-        //var urlCaptaciónPass: URL!
         
         // Control ENVIRONMENT
 #if PRO
         // load WebView
-        
         if isRecoverAuthentication{
             baseUrl = "https://pass.carrefour.es/tarjeta/origen=MIC4&data="
             guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
@@ -74,7 +72,6 @@ class VideoIdViewController: UIViewController {
             self.myWebView.load(URLRequest(url: url))
         }
 #endif
-        
     }
     
     private func urlForLoadWebView(isRecoverAuthentication: Bool, userData: UserDataModel, baseURLParameters: String) -> URL?{
@@ -108,6 +105,7 @@ extension VideoIdViewController: WKNavigationDelegate {
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         decisionHandler(.allow)
+        debugPrint(navigationAction.request.url?.absoluteString ?? "")
     }
     
     func webView(_ webView: WKWebView,
@@ -159,6 +157,19 @@ extension VideoIdViewController: WKNavigationDelegate {
             exitoVC.modalPresentationStyle = .fullScreen
             self.present(exitoVC, animated: true, completion: nil)
         }
+    }
+    
+    // Handling links containing untrusted certificates only CUA SFC4
+    func webView(_ webView: WKWebView,
+                 didReceive challenge: URLAuthenticationChallenge,
+                 completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        guard let serverTrust = challenge.protectionSpace.serverTrust else {
+            completionHandler(.cancelAuthenticationChallenge, nil)
+            return
+        }
+        let exceptions = SecTrustCopyExceptions(serverTrust)
+        SecTrustSetExceptions(serverTrust, exceptions)
+        completionHandler(.useCredential, URLCredential(trust: serverTrust));
     }
 }
 
