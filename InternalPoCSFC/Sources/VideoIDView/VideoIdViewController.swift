@@ -16,9 +16,7 @@ class VideoIdViewController: UIViewController {
     
     // MARK: - Variables
     var model: UserDataModel?
-    let isRecoverAuthentication = true
-    let isPoc = true
-    var baseUrl = ""
+    let isRecoverAuthentication = false
     weak var delegate: VideoIdViewControllerDelegate?
     
     // MARK: - IBOutlets
@@ -40,38 +38,34 @@ class VideoIdViewController: UIViewController {
     }
     
     private func loadWebView(userData: UserDataModel){
-        
         // Control ENVIRONMENT
 #if PRO
         // load WebView
         if isRecoverAuthentication{
-            baseUrl = "https://pass.carrefour.es/tarjeta/origen=MIC4&data="
             guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
                                                    userData: userData,
-                                                   baseURLParameters: baseUrl) else { return }
+                                                   baseURLParameters: Utils.Constants.urlProWithData) else { return }
             self.myWebView.load(URLRequest(url: url))
         } else {
-            baseUrl = "https://pass.carrefour.es/tarjeta/origen=MIC4"
             guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
                                                    userData: userData,
-                                                   baseURLParameters: baseUrl) else { return }
+                                                   baseURLParameters: Utils.Constants.urlProWithoutData) else { return }
             self.myWebView.load(URLRequest(url: url))
         }
 #else
         if isRecoverAuthentication{
-            baseUrl = "https://bcmspassdigitalcua.global.npsa.carrefour.es/?origen=MIC4&data="
             guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
                                                    userData: userData,
-                                                   baseURLParameters: baseUrl) else { return }
+                                                   baseURLParameters: Utils.Constants.urlCuaWithData) else { return }
             self.myWebView.load(URLRequest(url: url))
         } else {
-            baseUrl = "https://bcmspassdigitalcua.global.npsa.carrefour.es/?origen=MIC4"
             guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
                                                    userData: userData,
-                                                   baseURLParameters: baseUrl) else { return }
+                                                   baseURLParameters: Utils.Constants.urlCuaWithoutData) else { return }
             self.myWebView.load(URLRequest(url: url))
         }
 #endif
+
     }
     
     private func urlForLoadWebView(isRecoverAuthentication: Bool, userData: UserDataModel, baseURLParameters: String) -> URL?{

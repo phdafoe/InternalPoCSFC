@@ -29,6 +29,14 @@ class Utils{
         }
     }
     
+    struct Constants {
+        static let urlProWithData = "https://pass.carrefour.es/tarjeta/origen=MIC4&data="
+        static let urlProWithoutData = "https://pass.carrefour.es/tarjeta/origen=MIC4"
+        static let urlCuaWithData = "https://bcmspassdigitalcua.global.npsa.carrefour.es/?origen=MIC4&data="
+        static let urlCuaWithoutData = "https://bcmspassdigitalcua.global.npsa.carrefour.es/?origen=MIC4"
+        
+    }
+    
     
 }
 
