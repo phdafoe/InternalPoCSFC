@@ -1,0 +1,103 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+APPCENTER_KEY="193312cd04800ddec9a9de59846a63ec3a2026bf"
+APPCENTER_OWNER="phdafoe"
+APPCENTER_APPNAME="iCoSpartan"
+IPA_PATH=""
+SCHEME_PRO="sfc-leonardo-PRO"
+SCHEME_PRE="sfc-leonardo-PRE"
+IOS_EXPORT_METHOD="ad-hoc" | "enterprise"
+
+APP_IDENTIFIER="com.carrefour.carrefourPass"
+APPLE_ID="alvaro.nieto.cuesta@carrefour.com"
+TEAM_ID="24M2Y5UE44"
+WORKSPACE="sfc-leonardo.xcworkspace"
+
+platform :ios do
+
+  desc "Description of what the lane does release"
+  lane :release do
+    increment_build_number                # automatically increment by one
+    capture_screenshots                   # generate new screenshots for the App Store
+    sync_code_signing(type: "appstore")   # see code signing guide for more information
+    build_app(scheme: ENV['SCHEME_PRO'],
+              workspace: ENV['WORKSPACE'],
+              include_bitcode: true)
+    upload_to_app_store
+  end
+
+  lane :betaTestFlight do
+    desc "Description of what the lane does betaTestFlight"
+    build_app(scheme: ENV['SCHEME_PRE'],
+            workspace: ENV['WORKSPACE'],
+            include_bitcode: false)
+    upload_to_testflight
+  end
+
+
+ lane :appcenter_release do
+  desc "Description of what the lane does appcenter_release"
+  build
+  appcenter_upload(
+   api_token: ENV['APPCENTER_KEY'],
+   owner_name: ENV['APPCENTER_OWNER'],
+   app_name: ENV['APPCENTER_APPNAME'],
+   file: ENV['IPA_PATH'],
+   notify_testers: true,
+   destinations: ENV['APPCENTER_DESTINATION']
+  )
+  clean_build_artifacts
+ end
+
+
+  lane :distributeFirebase do
+    desc "Description of what the lane does distributeFirebase"
+    build_app(scheme: ENV['SCHEME_PRE'],
+            workspace: ENV['WORKSPACE'],
+            include_bitcode: false)
+    firebase_app_distribution(
+      app: "1:123456789:ios:abcd1234", # Required only if your app does not contain a Firebase config file (GoogleService-Info.plist)
+      testers: "tester1@company.com, tester2@company.com",
+      testers_file: "/path/to/testers.txt",
+      groups: "qa-team, trusted-testers",
+      groups_file: "/path/to/groups.txt",
+      release_notes: "Lots of amazing new features to test out!",
+      release_notes_file: "/path/to/release-notes.txt",
+      debug: true
+    )
+  end
+
+  lane :build do
+    gym(
+      scheme: ENV['SCHEME'],
+      clean: true,
+      export_method: ENV['IOS_EXPORT_METHOD'],
+      output_directory: './builds',
+      xcargs: "-allowProvisioningUpdates"
+    )
+  end
+
+  lane :increment_version do
+    latest_release = firebase_app_distribution_get_latest_release(
+      app: "<your Firebase app ID>"
+    )
+  increment_build_number({ build_number: latest_release[:buildVersion].to_i + 1 })
+  end
+
+
+end

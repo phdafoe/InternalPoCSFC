@@ -1,0 +1,6 @@
+app_identifier("com.carrefour.carrefourPassC") # The bundle identifier of your app
+apple_id("alvaro.nieto.cuesta@carrefour.com") # Your Apple email address
+
+# To select a team for App Store Connect use
+itc_team_id("123851614") # App Store Connect Team ID -> # itc_team_name "Company Name"
+team_id("24M2Y5UE44") # Developer Portal Team ID

@@ -109,18 +109,10 @@ extension VideoIdViewController: WKNavigationDelegate {
         decisionHandler(.allow)
         debugPrint(navigationResponse.response.url?.absoluteString ?? "")
         
-        guard let endNativeFlowErrorUnw = navigationResponse.response.url?.absoluteString.contains("?end=true") else {
-            return
-        }
-        guard let nativeErrorUnw = navigationResponse.response.url?.absoluteString.contains("?retry=false&end=true") else {
-            return
-        }
-        guard let nativeErrorSEUnw = navigationResponse.response.url?.absoluteString.contains("?card=false") else {
-            return
-        }
-        guard let successUnw = navigationResponse.response.url?.absoluteString.contains("?success=true") else {
-            return
-        }
+        guard let endNativeFlowErrorUnw = navigationResponse.response.url?.absoluteString.contains("?end=true") else { return }
+        guard let nativeErrorUnw = navigationResponse.response.url?.absoluteString.contains("?retry=false&end=true") else { return }
+        guard let nativeErrorSEUnw = navigationResponse.response.url?.absoluteString.contains("?card=false") else { return }
+        guard let successUnw = navigationResponse.response.url?.absoluteString.contains("?success=true") else { return }
         
         if endNativeFlowErrorUnw {
             self.dismiss(animated: false, completion: {
@@ -153,7 +145,7 @@ extension VideoIdViewController: WKNavigationDelegate {
         }
     }
     
-    // Handling links containing untrusted certificates only CUA SFC4
+    // Handling links containing untrusted certificates only CUA
     func webView(_ webView: WKWebView,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
