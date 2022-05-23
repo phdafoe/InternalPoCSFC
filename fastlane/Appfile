@@ -1,6 +1,15 @@
-app_identifier("com.carrefour.carrefourPassC") # The bundle identifier of your app
-apple_id("alvaro.nieto.cuesta@carrefour.com") # Your Apple email address
+# TEST APPSTORE
+# app_identifier("com.carrefour.carrefourPass") # The bundle identifier of your app
+# apple_id("alvaro.nieto.cuesta@carrefour.com") # Your Apple email address
 
 # To select a team for App Store Connect use
-itc_team_id("123851614") # App Store Connect Team ID -> # itc_team_name "Company Name"
-team_id("24M2Y5UE44") # Developer Portal Team ID
+# itc_team_id("123851614") # App Store Connect Team ID -> # itc_team_name "Company Name"
+# team_id("24M2Y5UE44") # Developer Portal Team ID
+
+# TEST FASTLANE
+app_identifier("com.icologic.InternalPoCSFC") # The bundle identifier of your app
+apple_id("phdafoe@gmail.com") # Your Apple email address
+
+# To select a team for App Store Connect use
+itc_team_id("1259721") # App Store Connect Team ID -> # itc_team_name "Company Name"
+team_id("2C7W4RF846") # Developer Portal Team ID
