@@ -27,8 +27,11 @@ platform :ios do
     scan(
       project:'InternalPoCSFC.xcodeproj',
       scheme:'InternalPoCSFCTests',
-      device: 'iPhone 8 (14.2)',
-      output_files: 'InternalPoCSFC.junit'
+      device: 'iPhone 8',
+      output_files: 'InternalPoCSFC.junit',
+      buildlog_path: './fastlane/fastlane-buildlog',
+      derived_data_path: '~/Library/Developer/Xcode/DerivedData',
+      result_bundle: true
     )
   end
 
