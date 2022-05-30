@@ -22,9 +22,14 @@ WORKSPACE="sfc-leonardo.xcworkspace"
 
 platform :ios do
 
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    puts("Hello Fastlane has finished your buid")
+  desc "Runs specs"
+  lane :specs do
+    scan(
+      project:'InternalPoCSFC.xcodeproj',
+      scheme:'InternalPoCSFCTests',
+      device: 'iPhone 8 (14.2)',
+      output_files: 'InternalPoCSFC.junit'
+    )
   end
 
   desc "Description of what the lane does release"
