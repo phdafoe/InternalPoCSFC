@@ -38,7 +38,7 @@ class VideoIdViewController: UIViewController {
     
     private func loadWebView(userData: UserDataModel){
         // Control ENVIRONMENT
-#if PRO
+    #if PRO
         // load WebView
         if isRecoverAuthentication{
             guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
@@ -51,7 +51,7 @@ class VideoIdViewController: UIViewController {
                                                    baseURLParameters: Utils.Constants.urlProWithoutData) else { return }
             self.myWebView.load(URLRequest(url: url))
         }
-#else
+    #else
         if isRecoverAuthentication{
             guard let url = self.urlForLoadWebView(isRecoverAuthentication: isRecoverAuthentication,
                                                    userData: userData,
@@ -63,7 +63,7 @@ class VideoIdViewController: UIViewController {
                                                    baseURLParameters: Utils.Constants.urlCuaWithoutData) else { return }
             self.myWebView.load(URLRequest(url: url))
         }
-#endif
+    #endif
 
     }
     
