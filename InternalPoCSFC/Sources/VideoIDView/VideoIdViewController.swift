@@ -16,7 +16,7 @@ class VideoIdViewController: UIViewController {
     
     // MARK: - Variables
     var model: UserDataModel?
-    let isRecoverAuthentication = false
+    let isRecoverAuthentication = true
     weak var delegate: VideoIdViewControllerDelegate?
     
     // MARK: - IBOutlets

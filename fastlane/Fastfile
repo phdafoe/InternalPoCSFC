@@ -22,6 +22,11 @@ WORKSPACE="sfc-leonardo.xcworkspace"
 
 platform :ios do
 
+  desc "Description of what the lane does"
+  lane :custom_lane do
+    puts("Hello Fastlane has finished your buid")
+  end
+
   desc "Description of what the lane does release"
   lane :release do
     increment_build_number                # automatically increment by one
@@ -50,7 +55,7 @@ platform :ios do
     owner_type: 'organization',
     app_os: 'ios',
     app_name: "InternalPoCSFC",
-    file: './builds/InternalPoCSFC.ipa',
+    file: './InternalPoCSFC.ipa',
     notify_testers: true
   )
   clean_build_artifacts
