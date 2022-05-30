@@ -37,15 +37,15 @@ platform :ios do
 
   desc "Build the IPA"
   lane :build_ipa do
-    plistPath = "../InternalPoCSFC/Settings.bundle/Info.plist"
+    # plistPath = "../InternalPoCSFC/Settings.bundle/Info.plist"
     buildNumber = increment_build_number
-    versionNumber = increment_build_number
-    update_settings_bundle(
-      xcodeproj: "./InternalPoCSFC.xcodeproj",
-      key: buildNumber,
-      value: ":version (:build)",
-      target: "InternalPoCSFC"
-    )
+    # versionNumber = increment_build_number
+    #update_settings_bundle(
+    #  xcodeproj: "./InternalPoCSFC.xcodeproj",
+    #  key: buildNumber,
+    #  value: ":version (:build)",
+    #  target: "InternalPoCSFC"
+    #)
 
     increment_build_number({
       xcodeproj: "InternalPoCSFC.xcodeproj",
@@ -55,9 +55,9 @@ platform :ios do
     if ENV["CUA"] == "true"
       otherSwiftFlags = otherSwiftFlags + "-DCUA"
     end
-    if otherSwiftFlags != ""
-      otherSwiftFlags = "OTHER_SWIFT_FLAGS=\"\\$(inherited) " + otherSwiftFlags + "\""
-    end
+    #if otherSwiftFlags != " "
+      #otherSwiftFlags = "OTHER_SWIFT_FLAGS=\"\\$(inherited) " + otherSwiftFlags + "\""
+    #end
     xcargs = otherSwiftFlags
     gym(
       project: "InternalPoCSFC.xcodeproj",
@@ -69,8 +69,15 @@ platform :ios do
       clean: false,
       xcargs: xcargs
     )
-    appIdentifier = ENV["APP_IDENTIFIER"]
-    tag_build(buildNumber, appIdentifier)
+    appIdentifier = "com.icologic.InternalPoCSFC"
+    add_git_tag(
+      grouping: "fastlane-builds",
+      includes_lane: true,
+      prefix: "v",
+      postfix: "-RC",
+      build_number: buildNumber
+    )
+    # tag_build(buildNumber, appIdentifier)
   end
 
   desc "Description of what the lane does release"
