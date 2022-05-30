@@ -1,0 +1,7 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme InternalPoCSFCTests -project InternalPoCSFC.xcodeproj -derivedDataPath "~/Library/Developer/Xcode/DerivedData" -destination "platform=iOS Simulator,id=1E445B15-A324-49F4-9F20-D942A6F0666E" build test
+
+User defaults from command line:
+    IDEDerivedDataPathOverride = /Users/tecdataengineering/Library/Developer/Xcode/DerivedData
+    IDEPackageSupportUseBuiltinSCM = YES
+

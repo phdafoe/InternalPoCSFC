@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='InternalPoCSFCTests.xctest' tests='2' failures='0'>
+  <testsuite name='InternalPoCSFCTests.InternalPoCSFCTests' tests='2' failures='0'>
+    <testcase classname='InternalPoCSFCTests.InternalPoCSFCTests' name='testExample' time='0.004'/>
+    <testcase classname='InternalPoCSFCTests.InternalPoCSFCTests' name='testPerformanceExample' time='0.299'/>
+  </testsuite>
+</testsuites>
