@@ -35,6 +35,44 @@ platform :ios do
     )
   end
 
+  desc "Build the IPA"
+  lane :build_ipa do
+    plistPath = "../InternalPoCSFC/Settings.bundle/Info.plist"
+    buildNumber = increment_build_number
+    versionNumber = increment_build_number
+    update_settings_bundle(
+      xcodeproj: "./InternalPoCSFC.xcodeproj",
+      key: buildNumber,
+      value: ":version (:build)",
+      target: "InternalPoCSFC"
+    )
+
+    increment_build_number({
+      xcodeproj: "InternalPoCSFC.xcodeproj",
+      build_number: buildNumber
+    })
+
+    if ENV["CUA"] == "true"
+      otherSwiftFlags = otherSwiftFlags + "-DCUA"
+    end
+    if otherSwiftFlags != ""
+      otherSwiftFlags = "OTHER_SWIFT_FLAGS=\"\\$(inherited) " + otherSwiftFlags + "\""
+    end
+    xcargs = otherSwiftFlags
+    gym(
+      project: "InternalPoCSFC.xcodeproj",
+      scheme: "InternalPoCSFC",
+      configuration: "PRO",
+      output_name: "InternalPoCSFC.ipa",
+      export_method: "app-store",
+      include_bitcode: false,
+      clean: false,
+      xcargs: xcargs
+    )
+    appIdentifier = ENV["APP_IDENTIFIER"]
+    tag_build(buildNumber, appIdentifier)
+  end
+
   desc "Description of what the lane does release"
   lane :release do
     increment_build_number                # automatically increment by one
@@ -68,37 +106,5 @@ platform :ios do
   )
   clean_build_artifacts
  end
-
-end
-
-platform :android do
-
-  lane :playstore do
-    gradle(task: 'assemble', build_type: 'Release')
-    upload_to_play_store
-  end
-
-  lane :beta do
-    # Adjust the `build_type` and `flavor` params as needed to build the right APK for your setup
-    gradle(task: 'assemble', build_type: 'Release')
-    upload_to_play_store(track: 'beta')
-
-    # ...
-  end
-
-  lane :appcenter_release do
-   desc "Description of what the lane does appcenter_release"
-   increment_build_number
-   appcenter_upload(
-    api_token: '193312cd04800ddec9a9de59846a63ec3a2026bf',
-    owner_name: 'icologic',
-    owner_type: 'organization',
-    app_os: 'Android',
-    app_name: "InternalPoCSFC",
-    file: './builds/InternalPoCSFC.apk',
-    notify_testers: true
-   )
-   clean_build_artifacts
-  end
 
 end

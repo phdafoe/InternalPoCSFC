@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Runs specs
 
+### ios build_ipa
+
+```sh
+[bundle exec] fastlane ios build_ipa
+```
+
+Build the IPA
+
 ### ios release
 
 ```sh
@@ -43,35 +51,6 @@ Description of what the lane does release
 
 ```sh
 [bundle exec] fastlane ios appcenter_release
-```
-
-
-
-----
-
-
-## Android
-
-### android playstore
-
-```sh
-[bundle exec] fastlane android playstore
-```
-
-
-
-### android beta
-
-```sh
-[bundle exec] fastlane android beta
-```
-
-
-
-### android appcenter_release
-
-```sh
-[bundle exec] fastlane android appcenter_release
 ```
 
 
