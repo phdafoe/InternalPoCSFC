@@ -22,8 +22,6 @@ class VideoIdViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet weak var myWebView: WKWebView!
         
-    
-    
     // MARK: - Cycle life
     override func viewDidLoad() {
         super.viewDidLoad()
