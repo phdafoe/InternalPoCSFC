@@ -38,6 +38,11 @@ platform :ios do
   desc "Build the IPA"
   lane :build_ipa do
     buildNumber = increment_build_number
+    increment_build_number({
+      xcodeproj: "InternalPoCSFC.xcodeproj",
+      build_number: buildNumber
+    })
+
     if ENV["CUA"] == "true"
       otherSwiftFlags = otherSwiftFlags + "-DCUA"
     end
