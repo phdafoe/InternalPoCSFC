@@ -5,27 +5,7 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000407">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="1: increment_build_number" time="1.507559">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="2: increment_build_number" time="0.997384">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: gym" time="18.36437">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="4: add_git_tag" time="0.060963">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000682">
         
       </testcase>
     
