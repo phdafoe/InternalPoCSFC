@@ -67,7 +67,7 @@ platform :ios do
   desc "Description of what the lane does release"
   lane :release do
     increment_build_number                # automatically increment by one
-    capture_screenshots                   # generate new screenshots for the App Store
+    # capture_screenshots                   # generate new screenshots for the App Store
     sync_code_signing(type: "appstore")   # see code signing guide for more information
     build_app(scheme: 'sfc-leonardo-PRO',
               workspace: 'sfc-leonardo.xcworkspace',

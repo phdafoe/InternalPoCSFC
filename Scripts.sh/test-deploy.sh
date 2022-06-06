@@ -18,7 +18,7 @@ bundle exec /usr/local/Cellar/fastlane/2.206.2/bin/fastlane gym
 bundle exec /usr/local/Cellar/fastlane/2.206.2/bin/fastlane specs
 
 # Build IPA
-/usr/local/Cellar/fastlane/2.206.2/bin/fastlane build_ipa
+bundle exec /usr/local/Cellar/fastlane/2.206.2/bin/fastlane build_ipa
 
 # Upload to APPCENTER
-/usr/local/Cellar/fastlane/2.206.2/bin/fastlane appcenter_release
+bundle exec /usr/local/Cellar/fastlane/2.206.2/bin/fastlane appcenter_release

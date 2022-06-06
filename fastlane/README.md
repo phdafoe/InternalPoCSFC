@@ -39,14 +39,6 @@ Build the IPA
 
 Description of what the lane does release
 
-### ios betaTestFlight
-
-```sh
-[bundle exec] fastlane ios betaTestFlight
-```
-
-
-
 ### ios appcenter_release
 
 ```sh
